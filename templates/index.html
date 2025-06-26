@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Churn Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Churn Prediction</h2>
+        <form method="post" action="/predict">
+
+            <label>Tenure (in months):</label>
+            <small>How long the customer has been with the company</small>
+            <input type="number" name="tenure" value="20"><br>
+
+            <label>Monthly Charges:</label>
+            <small>The current monthly charges for the customer</small>
+            <input type="number" step="0.01" name="MonthlyCharges" value="70.35"><br>
+
+            <label>Total Charges:</label>
+            <small>Total amount billed to the customer</small>
+            <input type="number" step="0.01" name="TotalCharges" value="1397.475"><br>
+
+            <label>Internet Service:</label>
+            <small>Type of internet service subscribed</small>
+            <select name="InternetService">
+                <option value="Fiber optic">Fiber optic</option>
+                <option value="DSL">DSL</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Phone Service:</label>
+            <small>Does the customer have phone service?</small>
+            <select name="PhoneService">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Multiple Lines:</label>
+            <small>Does the customer have multiple phone lines?</small>
+            <select name="MultipleLines">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Tech Support:</label>
+            <small>Is technical support subscribed?</small>
+            <select name="TechSupport">
+                <option value="No internet service">No internet service</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Streaming TV:</label>
+            <small>Is the customer subscribed to streaming TV?</small>
+            <select name="StreamingTV">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Streaming Movies:</label>
+            <small>Is the customer subscribed to streaming movies?</small>
+            <select name="StreamingMovies">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br>
+
+            <label>Total Services (0–6):</label>
+            <small>Number of services customer is subscribed to (security, backup, protection, support, TV, movies)</small>
+            <input type="number" name="total_services" min="0" max="6" value="4"><br>
+
+            <input type="submit" value="Predict">
+        </form>
+</div>
+<div>
+        {% if result %}
+        <div class="result">{{ result }}</div>
+        <div class="probability">Confidence: {{ probability }}%</div>
+        </div>
+        <div>
+        <div class="shap-image">
+            <h4>SHAP Explanation:</h4>
+            <img src="{{ url_for('static', filename=shap_image) }}" alt="SHAP Explanation" style="width:100%;max-width:800px;">
+        </div>
+    </div>
+        {% endif %}
+
+    
+    
+<!-- Result Card -->
+<div class="result-card">
+    {% if result %}
+      
+  
+      <div class="explanation-box">
+        <h3>Why this prediction?</h3>
+        <ul>
+          {% for reason in interpretation %}
+            <li>{{ reason }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+  
+</body>
+</html>
