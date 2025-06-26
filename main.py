@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Load XGBoost model
 model = xgb.XGBClassifier()
-model.load_model("model/churn_model.json")
+model.load_model("models/churn_model.json")
 
 
 
